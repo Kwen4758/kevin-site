@@ -7,36 +7,38 @@ export type Tetromino =
   | 'Teewee'
   | 'Smashboy';
 
+export type ActiveState = 0 | 1 | 2 | 3;
+
 // prettier-ignore
 export const TetrominoArrayMap = {
   OrangeRicky: [
-    [0, 0, 1],
-    [1, 1, 1]
+    [0, 0, 2],
+    [2, 3, 2]
   ],
   BlueRicky: [
-    [1, 0, 0],
-    [1, 1, 1]
+    [2, 0, 0],
+    [2, 3, 2]
   ],
   ClevelandZ: [
-    [1, 1, 0],
-    [0, 1, 1]
+    [2, 2, 0],
+    [0, 3, 2]
   ],
   RhodeIslandZ: [
-    [0, 1, 1],
-    [1, 1, 0]
+    [0, 2, 2],
+    [2, 3, 0]
   ],
   Hero: [
-    [1, 1, 1, 1]
+    [2, 3, 2, 2]
   ],
   Teewee: [
-    [0, 1, 0],
-    [1, 1, 1]
+    [0, 2, 0],
+    [2, 3, 2]
   ],
   Smashboy: [
-    [1, 1],
-    [1, 1]
+    [2, 2],
+    [3, 2]
   ]
-};
+} as {[name: string]: ActiveState[][]}
 
 export const TetrominoColorMap = {
   OrangeRicky: 'orange',
@@ -52,7 +54,7 @@ export const TetrominoColorMap = {
 export interface TileIdentity {
   id: number | null;
   tetromino: Tetromino | null;
-  activeState: 0 | 1 | 2;
+  activeState: ActiveState;
 }
 
 export const emptyTile: TileIdentity = {
@@ -61,4 +63,4 @@ export const emptyTile: TileIdentity = {
   activeState: 0,
 };
 
-export type ValidMove = 'left' | 'right' | 'down'
+export type ValidMove = 'left' | 'right' | 'down';

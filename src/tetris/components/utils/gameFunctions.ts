@@ -24,12 +24,13 @@ export const getEmptyGrid = () => {
 export const getRandomShape = (id: number) => {
   const shapeArray = Object.entries(TAM) as [Tetromino, number[][]][];
   const [tetromino, myArray] =
-    shapeArray[Math.floor(Math.random() * shapeArray.length)];
-  const myIdentity = { id, tetromino, activeState: 2 };
-  let counter = 0;
+    shapeArray[6 || Math.floor(Math.random() * shapeArray.length)];
+  const myIdentity = { id, tetromino };
   return myArray.map((row) =>
     row.map((filled) =>
-      filled === 0 ? { ...emptyTile } : { ...myIdentity, innerId: ++counter }
+      filled === 0
+        ? { ...emptyTile }
+        : { ...myIdentity, activeState: filled }
     )
   ) as TileIdentity[][];
 };
@@ -56,7 +57,7 @@ const canMakeMove = (grid: TileIdentity[][], direction: ValidMove) => {
     const row = grid[rowIndex];
     for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
       const tile = row[columnIndex];
-      if (tile.activeState === 2) {
+      if (tile.activeState === 2 || tile.activeState === 3) {
         switch (direction) {
           case 'left':
             const destinationLeft = grid[rowIndex][columnIndex - 1];
@@ -102,7 +103,7 @@ export const moveShape = (
     const row = originalGrid[rowIndex];
     for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
       const tileToMove = row[columnIndex];
-      if (tileToMove.activeState === 2) {
+      if (tileToMove.activeState === 2 || tileToMove.activeState === 3) {
         switch (direction) {
           case 'left':
             newGrid[rowIndex][columnIndex - 1] = tileToMove;
@@ -130,7 +131,10 @@ export const freezeGrid = (grid: TileIdentity[][]) => {
     return row.map((tile) => {
       return {
         ...tile,
-        activeState: tile.activeState === 2 ? 1 : tile.activeState,
+        activeState:
+          tile.activeState === 2 || tile.activeState === 3
+            ? 1
+            : tile.activeState,
       } as TileIdentity;
     });
   });
