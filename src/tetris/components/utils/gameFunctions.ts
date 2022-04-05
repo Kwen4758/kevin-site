@@ -24,7 +24,7 @@ export const getEmptyGrid = () => {
 export const getRandomShape = (id: number) => {
   const shapeArray = Object.entries(TAM) as [Tetromino, number[][]][];
   const [tetromino, myArray] =
-    shapeArray[6 || Math.floor(Math.random() * shapeArray.length)];
+    shapeArray[Math.floor(Math.random() * shapeArray.length)];
   const myIdentity = { id, tetromino };
   return myArray.map((row) =>
     row.map((filled) =>
