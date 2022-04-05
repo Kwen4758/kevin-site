@@ -1,0 +1,17 @@
+.tile {
+  width: 25px;
+  height: 25px;
+  border: solid
+}
+
+.flexRow, .flexColumn {
+  display: flex;
+}
+
+.flexRow {
+  flex-direction: row;
+}
+
+.flexColumn {
+  flex-direction: column;
+}
