@@ -64,3 +64,5 @@ export const emptyTile: TileIdentity = {
 };
 
 export type ValidMove = 'left' | 'right' | 'down';
+
+export type GameState = 'playing' | 'paused' | 'over';
