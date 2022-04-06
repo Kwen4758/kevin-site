@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import {
   addShapeToGrid,
+  attemptRotation,
   canMakeMove,
   checkForLineClear,
   clearLines,
@@ -19,10 +20,8 @@ const TICK_TIME = 500;
 
 const Tetris = () => {
   const score = useRef(0);
-  const [grid, setGrid] = useState(
-    addShapeToGrid(getRandomShape(Date.now()), getEmptyGrid())
-  );
-  const [gameState, setGameState] = useState<GameState>('playing');
+  const [gameState, setGameState] = useState<GameState>('fresh');
+  const [grid, setGrid] = useState(getEmptyGrid());
   // handles tick
   useEffect(() => {
     let tickTimeout: NodeJS.Timeout;
@@ -63,6 +62,10 @@ const Tetris = () => {
             ? moveActiveTetromino(prevGrid, moveDirection)
             : prevGrid;
         });
+      } else if (keyName === 'arrowup') {
+        setGrid((prevGrid) => attemptRotation(prevGrid, 'clockwise'));
+      } else if (keyName === 'shift') {
+        setGrid((prevGrid) => attemptRotation(prevGrid, 'counter clockwise'));
       } else if (keyName === ' ') setGrid((prevGrid) => smashDown(prevGrid));
     };
     document.addEventListener('keydown', keyDownHandler);
@@ -70,13 +73,41 @@ const Tetris = () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
   }, []);
+
+  const gameStartHandler = () => {
+    setGrid((prevGrid) => addShapeToGrid(getRandomShape(Date.now()), prevGrid));
+    setGameState('playing');
+  };
+
+  const gamePauseHandler = () => {
+    setGameState((prevState) => {
+      return prevState === 'playing' ? 'paused' : 'playing';
+    });
+  };
+
+  const gameResetHandler = () => {
+    setGrid(getEmptyGrid());
+    setGameState('fresh');
+  };
+
   return (
     <>
-      <Grid grid={grid} />
-      {score.current}
-      <br />
-      {gameState === 'over' && 'Game Over'}
       <Link to="/">HOME</Link>
+      Score: {score.current}
+      <Grid grid={grid} />
+      <button onClick={gameStartHandler} disabled={gameState !== 'fresh'}>
+        START GAME
+      </button>
+      <button
+        onClick={gamePauseHandler}
+        disabled={gameState === 'fresh' || gameState === 'over'}
+      >
+        PAUSE/RESUME GAME
+      </button>
+      <button onClick={gameResetHandler} disabled={gameState === 'fresh'}>
+        RESET GAME
+      </button>
+      {gameState === 'over' && 'Game Over'}
     </>
   );
 };

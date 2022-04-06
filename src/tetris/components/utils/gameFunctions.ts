@@ -4,6 +4,7 @@ import {
   TetrominoArrayMap as TAM,
   TileIdentity,
   ValidMove,
+  ValidRotation,
 } from './index';
 
 const deepClone = (grid: TileIdentity[][]) => {
@@ -57,32 +58,26 @@ export const canMakeMove = (grid: TileIdentity[][], direction: ValidMove) => {
       const tile = row[columnIndex];
       if (tile.activeState === 2 || tile.activeState === 3) {
         switch (direction) {
-          case 'left':
-            const destinationLeft = grid[rowIndex][columnIndex - 1];
-            if (
-              destinationLeft?.activeState !== 0 &&
-              destinationLeft?.id !== tile.id
-            )
+          case 'left': {
+            const destination = grid[rowIndex][columnIndex - 1];
+            if (destination?.activeState !== 0 && destination?.id !== tile.id)
               return false;
             break;
-          case 'right':
-            const destinationRight = grid[rowIndex][columnIndex + 1];
-            if (
-              destinationRight?.activeState !== 0 &&
-              destinationRight?.id !== tile.id
-            )
+          }
+          case 'right': {
+            const destination = grid[rowIndex][columnIndex + 1];
+            if (destination?.activeState !== 0 && destination?.id !== tile.id)
               return false;
             break;
-          case 'down':
-            const destinationDown = grid[rowIndex + 1]
+          }
+          case 'down': {
+            const destination = grid[rowIndex + 1]
               ? grid[rowIndex + 1][columnIndex]
               : undefined;
-            if (
-              destinationDown?.activeState !== 0 &&
-              destinationDown?.id !== tile.id
-            )
+            if (destination?.activeState !== 0 && destination?.id !== tile.id)
               return false;
             break;
+          }
         }
       }
     }
@@ -114,6 +109,71 @@ export const moveActiveTetromino = (
             newGrid[rowIndex + 1][columnIndex] = tileToMove;
             justSet.push(`${rowIndex + 1}-${columnIndex}`);
             break;
+        }
+        if (!justSet.includes(`${rowIndex}-${columnIndex}`))
+          newGrid[rowIndex][columnIndex] = { ...emptyTile };
+      }
+    }
+  }
+  return newGrid;
+};
+
+export const attemptRotation = (
+  originalGrid: TileIdentity[][],
+  direction: ValidRotation
+) => {
+  const center = (() => {
+    for (let rowIndex = 0; rowIndex < originalGrid.length; rowIndex++) {
+      for (
+        let columnIndex = 0;
+        columnIndex < originalGrid[rowIndex].length;
+        columnIndex++
+      ) {
+        if (originalGrid[rowIndex][columnIndex].activeState === 3) {
+          return { x: columnIndex, y: rowIndex };
+        }
+      }
+    }
+  })();
+  if (!center) {
+    return originalGrid;
+  }
+  const newGrid = deepClone(originalGrid);
+  const justSet: string[] = [];
+  for (let rowIndex = 0; rowIndex < originalGrid.length; rowIndex++) {
+    const row = originalGrid[rowIndex];
+    for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+      const tileToMove = row[columnIndex];
+      if (tileToMove.activeState === 2) {
+        switch (direction) {
+          case 'clockwise': {
+            const destinationY = center.y - center.x + columnIndex;
+            const destinationX = center.x + center.y - rowIndex;
+            if (
+              !newGrid[destinationY] ||
+              !newGrid[destinationY][destinationX] ||
+              newGrid[destinationY][destinationX].activeState === 1
+            ) {
+              return originalGrid;
+            }
+            newGrid[destinationY][destinationX] = tileToMove;
+            justSet.push(`${destinationY}-${destinationX}`);
+            break;
+          }
+          case 'counter clockwise': {
+            const destinationY = center.y + center.x - columnIndex;
+            const destinationX = center.x - center.y + rowIndex;
+            if (
+              !newGrid[destinationY] ||
+              !newGrid[destinationY][destinationX] ||
+              newGrid[destinationY][destinationX].activeState === 1
+            ) {
+              return originalGrid;
+            }
+            newGrid[destinationY][destinationX] = tileToMove;
+            justSet.push(`${destinationY}-${destinationX}`);
+            break;
+          }
         }
         if (!justSet.includes(`${rowIndex}-${columnIndex}`))
           newGrid[rowIndex][columnIndex] = { ...emptyTile };
@@ -159,7 +219,7 @@ export const clearLines = (grid: TileIdentity[][], fullRows: number[]) => {
     if (!fullRows.includes(rowIndex)) newGrid.push(row);
   });
   while (newGrid.length < grid.length)
-    newGrid.unshift(new Array(grid[0].length).fill(0).fill({ ...emptyTile }));
+    newGrid.unshift(new Array(grid[0].length).fill({ ...emptyTile }));
   return newGrid;
 };
 

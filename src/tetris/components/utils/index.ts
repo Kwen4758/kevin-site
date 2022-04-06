@@ -36,7 +36,7 @@ export const TetrominoArrayMap = {
   ],
   Smashboy: [
     [2, 2],
-    [3, 2]
+    [2, 2]
   ]
 } as {[name: string]: ActiveState[][]}
 
@@ -65,4 +65,6 @@ export const emptyTile: TileIdentity = {
 
 export type ValidMove = 'left' | 'right' | 'down';
 
-export type GameState = 'playing' | 'paused' | 'over';
+export type ValidRotation = 'clockwise' | 'counter clockwise';
+
+export type GameState = 'fresh' | 'playing' | 'paused' | 'over';
