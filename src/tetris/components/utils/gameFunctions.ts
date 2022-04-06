@@ -28,9 +28,7 @@ export const getRandomShape = (id: number) => {
   const myIdentity = { id, tetromino };
   return myArray.map((row) =>
     row.map((filled) =>
-      filled === 0
-        ? { ...emptyTile }
-        : { ...myIdentity, activeState: filled }
+      filled === 0 ? { ...emptyTile } : { ...myIdentity, activeState: filled }
     )
   ) as TileIdentity[][];
 };
@@ -52,7 +50,7 @@ export const addShapeToGrid = (
 };
 
 // checks only for cardinal directions
-const canMakeMove = (grid: TileIdentity[][], direction: ValidMove) => {
+export const canMakeMove = (grid: TileIdentity[][], direction: ValidMove) => {
   for (let rowIndex = 0; rowIndex < grid.length; rowIndex++) {
     const row = grid[rowIndex];
     for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
@@ -92,11 +90,10 @@ const canMakeMove = (grid: TileIdentity[][], direction: ValidMove) => {
   return true;
 };
 
-export const moveShape = (
+export const moveActiveTetromino = (
   originalGrid: TileIdentity[][],
   direction: ValidMove
 ) => {
-  if (!canMakeMove(originalGrid, direction)) return false;
   const newGrid = deepClone(originalGrid);
   const justSet: string[] = [];
   for (let rowIndex = 0; rowIndex < originalGrid.length; rowIndex++) {
@@ -124,6 +121,14 @@ export const moveShape = (
     }
   }
   return newGrid;
+};
+
+export const smashDown = (grid: TileIdentity[][]) => {
+  let currentGrid = grid;
+  while (canMakeMove(currentGrid, 'down')) {
+    currentGrid = moveActiveTetromino(currentGrid, 'down');
+  }
+  return currentGrid;
 };
 
 export const freezeGrid = (grid: TileIdentity[][]) => {
@@ -156,4 +161,11 @@ export const clearLines = (grid: TileIdentity[][], fullRows: number[]) => {
   while (newGrid.length < grid.length)
     newGrid.unshift(new Array(grid[0].length).fill(0).fill({ ...emptyTile }));
   return newGrid;
+};
+
+export const gameIsOver = (grid: TileIdentity[][]) => {
+  return !!grid
+    .slice(0, 3)
+    .flat()
+    .find((tile) => tile.activeState === 1);
 };
