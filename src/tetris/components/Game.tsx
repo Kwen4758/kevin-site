@@ -1,15 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import {
   addShapeToGrid,
+  canMakeMove,
   checkForLineClear,
   clearLines,
   freezeGrid,
+  gameIsOver,
   getEmptyGrid,
   getRandomShape,
-  moveShape,
+  moveActiveTetromino,
+  smashDown,
 } from './utils/gameFunctions';
+import { GameState, ValidMove } from './utils';
 import Grid from './Grid';
-import { ValidMove } from './utils';
+import { Link } from 'react-router-dom';
 
 const TICK_TIME = 500;
 
@@ -18,26 +22,21 @@ const Tetris = () => {
   const [grid, setGrid] = useState(
     addShapeToGrid(getRandomShape(Date.now()), getEmptyGrid())
   );
+  const [gameState, setGameState] = useState<GameState>('playing');
+  // handles tick
   useEffect(() => {
-    document.addEventListener('keydown', (event: KeyboardEvent) => {
-      const keyName = event.key.toLocaleLowerCase();
-      if (keyName.startsWith('arrow') && !keyName.endsWith('up')) {
-        setGrid((prevGrid) => {
-          const newGrid = moveShape(
-            prevGrid,
-            keyName.split('arrow')[1] as ValidMove
-          );
-          return newGrid || prevGrid;
-        });
-      }
-    });
+    let tickTimeout: NodeJS.Timeout;
     const tick = () => {
-      setTimeout(() => {
+      tickTimeout = setTimeout(() => {
         setGrid((prevGrid) => {
-          const newGrid = moveShape(prevGrid, 'down');
-          if (newGrid) return newGrid;
-          else {
+          if (canMakeMove(prevGrid, 'down')) {
+            return moveActiveTetromino(prevGrid, 'down');
+          } else {
             const frozenGrid = freezeGrid(prevGrid);
+            if (gameIsOver(frozenGrid)) {
+              setGameState('over');
+              return frozenGrid;
+            }
             const linesToClear = checkForLineClear(frozenGrid);
             const clearedGrid = clearLines(frozenGrid, linesToClear);
             score.current += linesToClear.length;
@@ -47,12 +46,37 @@ const Tetris = () => {
         tick();
       }, TICK_TIME);
     };
-    tick();
+    if (gameState === 'playing') tick();
+    return () => {
+      clearTimeout(tickTimeout);
+    };
+  }, [gameState]);
+
+  // handles user input
+  useEffect(() => {
+    const keyDownHandler = (event: KeyboardEvent) => {
+      const keyName = event.key.toLocaleLowerCase();
+      if (keyName.startsWith('arrow') && !keyName.endsWith('up')) {
+        const moveDirection = keyName.split('arrow')[1] as ValidMove;
+        setGrid((prevGrid) => {
+          return canMakeMove(prevGrid, moveDirection)
+            ? moveActiveTetromino(prevGrid, moveDirection)
+            : prevGrid;
+        });
+      } else if (keyName === ' ') setGrid((prevGrid) => smashDown(prevGrid));
+    };
+    document.addEventListener('keydown', keyDownHandler);
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    };
   }, []);
   return (
     <>
       <Grid grid={grid} />
       {score.current}
+      <br />
+      {gameState === 'over' && 'Game Over'}
+      <Link to="/">HOME</Link>
     </>
   );
 };
