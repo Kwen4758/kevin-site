@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   addShapeToGrid,
   attemptRotation,
@@ -12,19 +12,23 @@ import {
   moveActiveTetromino,
   smashDown,
 } from './logic/functions';
-import { GameState, ValidMove } from './logic/constants';
+import { GameState } from './logic/constants';
 import Grid from './Grid';
+import useKeyEvents from './logic/useKeyEvents';
+import useSwipeEvents from './logic/useSwipeEvents';
 
 const TICK_TIME = 500;
 
 const Tetris = () => {
   const score = useRef(0);
-  const [gameState, setGameState] = useState<GameState>('fresh');
   const [grid, setGrid] = useState(getEmptyGrid());
+  const [gameState, setGameState] = useState<GameState>('fresh');
+
+  const isPlaying = gameState === 'playing';
 
   // handles tick
   useEffect(() => {
-    if (gameState === 'playing') {
+    if (isPlaying) {
       let tickTimeout: NodeJS.Timeout;
       const tick = () => {
         tickTimeout = setTimeout(() => {
@@ -51,32 +55,66 @@ const Tetris = () => {
         clearTimeout(tickTimeout);
       };
     }
-  }, [gameState]);
+  }, [gameState, isPlaying]);
 
-  // handles user input
-  useEffect(() => {
-    if (gameState === 'playing') {
-      const keyDownHandler = (event: KeyboardEvent) => {
-        const keyName = event.key.toLocaleLowerCase();
-        if (keyName.startsWith('arrow') && !keyName.endsWith('up')) {
-          const moveDirection = keyName.split('arrow')[1] as ValidMove;
-          setGrid((prevGrid) => {
-            return canMakeMove(prevGrid, moveDirection)
-              ? moveActiveTetromino(prevGrid, moveDirection)
-              : prevGrid;
-          });
-        } else if (keyName === 'arrowup') {
-          setGrid((prevGrid) => attemptRotation(prevGrid, 'clockwise'));
-        } else if (keyName === 'shift') {
-          setGrid((prevGrid) => attemptRotation(prevGrid, 'counter clockwise'));
-        } else if (keyName === ' ') setGrid((prevGrid) => smashDown(prevGrid));
-      };
-      document.addEventListener('keydown', keyDownHandler);
-      return () => {
-        document.removeEventListener('keydown', keyDownHandler);
-      };
+  const moveDownHandler = useCallback(() => {
+    if (isPlaying)
+      setGrid((prevGrid) => {
+        return canMakeMove(prevGrid, 'down')
+          ? moveActiveTetromino(prevGrid, 'down')
+          : prevGrid;
+      });
+  }, [isPlaying]);
+
+  const moveRightHandler = useCallback(() => {
+    if (isPlaying)
+      setGrid((prevGrid) => {
+        return canMakeMove(prevGrid, 'right')
+          ? moveActiveTetromino(prevGrid, 'right')
+          : prevGrid;
+      });
+  }, [isPlaying]);
+
+  const moveLeftHandler = useCallback(() => {
+    if (isPlaying)
+      setGrid((prevGrid) => {
+        return canMakeMove(prevGrid, 'left')
+          ? moveActiveTetromino(prevGrid, 'left')
+          : prevGrid;
+      });
+  }, [isPlaying]);
+
+  const rotateClockwiseHandler = useCallback(() => {
+    if (isPlaying) {
+      setGrid((prevGrid) => attemptRotation(prevGrid, 'clockwise'));
     }
-  }, [gameState]);
+  }, [isPlaying]);
+
+  const rotateCounterHandler = useCallback(() => {
+    if (isPlaying) {
+      setGrid((prevGrid) => attemptRotation(prevGrid, 'counter clockwise'));
+    }
+  }, [isPlaying]);
+
+  const smashHandler = useCallback(() => {
+    if (isPlaying) setGrid((prevGrid) => smashDown(prevGrid));
+  }, [isPlaying]);
+
+  useKeyEvents({
+    arrowDown: moveDownHandler,
+    arrowRight: moveRightHandler,
+    arrowLeft: moveLeftHandler,
+    arrowUp: rotateClockwiseHandler,
+    shift: rotateCounterHandler,
+    space: smashHandler,
+  });
+
+  useSwipeEvents({
+    onSwipeUp: rotateClockwiseHandler,
+    onSwipeDown: smashHandler,
+    onSwipeLeft: moveRightHandler,
+    onSwipeRight: moveLeftHandler,
+  });
 
   const gameStartHandler = () => {
     setGrid((prevGrid) => addShapeToGrid(getRandomShape(Date.now()), prevGrid));
