@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import TileRenderer from './TileRenderer';
-import { checkWord } from './logic/functions';
+import { checkWord_API } from './logic/functions';
 
 interface GameBoardProps {
   maxTurns: number;
@@ -12,7 +12,7 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
   const [currentGuess, setCurrentGuess] = useState('');
 
   const checkGuess = useCallback((word: string) => {
-    checkWord(word).then((isWord) => {
+    checkWord_API(word).then((isWord) => {
       if (isWord) {
         setPastGuesses((prev) => [...prev, word]);
         setCurrentGuess('');

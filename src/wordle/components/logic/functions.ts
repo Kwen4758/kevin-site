@@ -1,6 +1,9 @@
 import axios, { Method } from 'axios';
+import WORDS_JSON from './words.json';
 
-const getRandomWord = async (length: number): Promise<string> => {
+const words = WORDS_JSON as string[];
+
+const getRandomWord_API = async (length: number): Promise<string> => {
   const options = {
     method: 'GET' as Method,
     url: 'https://wordsapiv1.p.rapidapi.com/words/',
@@ -24,7 +27,7 @@ const getRandomWord = async (length: number): Promise<string> => {
   return ((res?.data?.word as string) ?? 'rando').toLocaleUpperCase();
 };
 
-const checkWord = async (word: string): Promise<boolean> => {
+const checkWord_API = async (word: string): Promise<boolean> => {
   const options = {
     method: 'GET' as Method,
     url: `https://wordsapiv1.p.rapidapi.com/words/${word}`,
@@ -41,4 +44,8 @@ const checkWord = async (word: string): Promise<boolean> => {
   return res?.status === 200;
 };
 
-export { getRandomWord, checkWord };
+const getRandomWord = () => {
+  return words[Math.floor(Math.random() * words.length)].toLocaleUpperCase();
+};
+
+export { getRandomWord_API, checkWord_API, getRandomWord };
