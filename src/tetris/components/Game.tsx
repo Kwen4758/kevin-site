@@ -123,6 +123,7 @@ const Tetris = () => {
   };
 
   const gameResetHandler = () => {
+    score.current = 0;
     setGrid(getEmptyGrid());
     setGameState('fresh');
   };
