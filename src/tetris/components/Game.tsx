@@ -14,7 +14,6 @@ import {
 } from './logic/functions';
 import { GameState, ValidMove } from './logic/constants';
 import Grid from './Grid';
-import { Link } from 'react-router-dom';
 
 const TICK_TIME = 500;
 
@@ -92,7 +91,6 @@ const Tetris = () => {
 
   return (
     <>
-      <Link to="/">HOME</Link>
       Score: {score.current}
       <Grid grid={grid} />
       <button onClick={gameStartHandler} disabled={gameState !== 'fresh'}>
