@@ -5,6 +5,7 @@ import App from "./app/App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Tetris from "./tetris/Tetris";
+import Wordle from './wordle/Wordle';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -12,6 +13,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="tetris" element={<Tetris />} />
+        <Route path="wordle" element={<Wordle />} />
         <Route path="*" element={<App />} />
       </Routes>
     </React.StrictMode>

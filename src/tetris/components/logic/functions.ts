@@ -5,7 +5,7 @@ import {
   TileIdentity,
   ValidMove,
   ValidRotation,
-} from './index';
+} from './constants';
 
 const deepClone = (grid: TileIdentity[][]) => {
   return grid.map((row) => {

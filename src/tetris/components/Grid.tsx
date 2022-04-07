@@ -1,5 +1,5 @@
-import styles from './utils/tetris.module.css';
-import { Tetromino, TetrominoColorMap, TileIdentity } from './utils';
+import styles from './tetris.module.css';
+import { Tetromino, TetrominoColorMap, TileIdentity } from './logic/constants';
 
 interface TileProps {
   tetromino: Tetromino | 'None';

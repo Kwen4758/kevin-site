@@ -7,6 +7,9 @@ function App() {
       <Link to="/tetris" className={styles.appLink}>
         Tetris
       </Link>
+      <Link to="/wordle" className={styles.appLink}>
+        Wordle
+      </Link>
     </div>
   );
 }

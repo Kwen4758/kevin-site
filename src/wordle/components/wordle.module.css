@@ -1,0 +1,13 @@
+.tile {
+  width: 10vh;
+  height: 10vh;
+  border-radius: 3px;
+  margin: 2px;
+  color: black;
+  line-height: 10vh;
+}
+
+.tileRow {
+  display: flex;
+  flex-direction: 'row';
+}

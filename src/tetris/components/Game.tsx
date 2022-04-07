@@ -11,8 +11,8 @@ import {
   getRandomShape,
   moveActiveTetromino,
   smashDown,
-} from './utils/gameFunctions';
-import { GameState, ValidMove } from './utils';
+} from './logic/functions';
+import { GameState, ValidMove } from './logic/constants';
 import Grid from './Grid';
 import { Link } from 'react-router-dom';
 
