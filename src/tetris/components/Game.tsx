@@ -134,19 +134,21 @@ const Tetris = () => {
     <>
       Score: {score.current}
       <Grid grid={grid} />
-      <button onClick={gameStartHandler} disabled={gameState !== 'fresh'}>
-        START GAME
-      </button>
-      <button
-        onClick={gamePauseHandler}
-        disabled={gameState === 'fresh' || gameState === 'over'}
-      >
-        PAUSE/RESUME GAME
-      </button>
-      <button onClick={gameResetHandler} disabled={gameState === 'fresh'}>
-        RESET GAME
-      </button>
-      {gameState === 'over' && 'Game Over'}
+      {gameState === 'over' ? (
+        'Game Over'
+      ) : (
+        <>
+          <button onClick={gameStartHandler} disabled={gameState !== 'fresh'}>
+            START GAME
+          </button>
+          <button onClick={gamePauseHandler} disabled={gameState === 'fresh'}>
+            PAUSE/RESUME GAME
+          </button>
+        </>
+      )}
+      {gameState !== 'fresh' && (
+        <button onClick={gameResetHandler}>RESET GAME</button>
+      )}
     </>
   );
 };
