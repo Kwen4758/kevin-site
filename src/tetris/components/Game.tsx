@@ -21,57 +21,62 @@ const Tetris = () => {
   const score = useRef(0);
   const [gameState, setGameState] = useState<GameState>('fresh');
   const [grid, setGrid] = useState(getEmptyGrid());
+
   // handles tick
   useEffect(() => {
-    let tickTimeout: NodeJS.Timeout;
-    const tick = () => {
-      tickTimeout = setTimeout(() => {
-        setGrid((prevGrid) => {
-          if (canMakeMove(prevGrid, 'down')) {
-            return moveActiveTetromino(prevGrid, 'down');
-          } else {
-            const frozenGrid = freezeGrid(prevGrid);
-            if (gameIsOver(frozenGrid)) {
-              setGameState('over');
-              return frozenGrid;
+    if (gameState === 'playing') {
+      let tickTimeout: NodeJS.Timeout;
+      const tick = () => {
+        tickTimeout = setTimeout(() => {
+          setGrid((prevGrid) => {
+            if (canMakeMove(prevGrid, 'down')) {
+              return moveActiveTetromino(prevGrid, 'down');
+            } else {
+              const frozenGrid = freezeGrid(prevGrid);
+              if (gameIsOver(frozenGrid)) {
+                setGameState('over');
+                return frozenGrid;
+              }
+              const linesToClear = checkForLineClear(frozenGrid);
+              const clearedGrid = clearLines(frozenGrid, linesToClear);
+              score.current += linesToClear.length;
+              return addShapeToGrid(getRandomShape(Date.now()), clearedGrid);
             }
-            const linesToClear = checkForLineClear(frozenGrid);
-            const clearedGrid = clearLines(frozenGrid, linesToClear);
-            score.current += linesToClear.length;
-            return addShapeToGrid(getRandomShape(Date.now()), clearedGrid);
-          }
-        });
-        tick();
-      }, TICK_TIME);
-    };
-    if (gameState === 'playing') tick();
-    return () => {
-      clearTimeout(tickTimeout);
-    };
+          });
+          tick();
+        }, TICK_TIME);
+      };
+      tick();
+      return () => {
+        clearTimeout(tickTimeout);
+      };
+    }
   }, [gameState]);
 
   // handles user input
   useEffect(() => {
-    const keyDownHandler = (event: KeyboardEvent) => {
-      const keyName = event.key.toLocaleLowerCase();
-      if (keyName.startsWith('arrow') && !keyName.endsWith('up')) {
-        const moveDirection = keyName.split('arrow')[1] as ValidMove;
-        setGrid((prevGrid) => {
-          return canMakeMove(prevGrid, moveDirection)
-            ? moveActiveTetromino(prevGrid, moveDirection)
-            : prevGrid;
-        });
-      } else if (keyName === 'arrowup') {
-        setGrid((prevGrid) => attemptRotation(prevGrid, 'clockwise'));
-      } else if (keyName === 'shift') {
-        setGrid((prevGrid) => attemptRotation(prevGrid, 'counter clockwise'));
-      } else if (keyName === ' ') setGrid((prevGrid) => smashDown(prevGrid));
-    };
-    document.addEventListener('keydown', keyDownHandler);
-    return () => {
-      document.removeEventListener('keydown', keyDownHandler);
-    };
-  }, []);
+    if (gameState === 'playing') {
+      const keyDownHandler = (event: KeyboardEvent) => {
+        const keyName = event.key.toLocaleLowerCase();
+        if (keyName.startsWith('arrow') && !keyName.endsWith('up')) {
+          const moveDirection = keyName.split('arrow')[1] as ValidMove;
+          setGrid((prevGrid) => {
+            return canMakeMove(prevGrid, moveDirection)
+              ? moveActiveTetromino(prevGrid, moveDirection)
+              : prevGrid;
+          });
+        } else if (keyName === 'arrowup') {
+          setGrid((prevGrid) => attemptRotation(prevGrid, 'clockwise'));
+        } else if (keyName === 'shift') {
+          setGrid((prevGrid) => attemptRotation(prevGrid, 'counter clockwise'));
+        } else if (keyName === ' ') setGrid((prevGrid) => smashDown(prevGrid));
+      };
+      document.addEventListener('keydown', keyDownHandler);
+      return () => {
+        document.removeEventListener('keydown', keyDownHandler);
+      };
+    }
+  }, [gameState]);
 
   const gameStartHandler = () => {
     setGrid((prevGrid) => addShapeToGrid(getRandomShape(Date.now()), prevGrid));
