@@ -28,34 +28,32 @@ const Tetris = () => {
 
   // handles tick
   useEffect(() => {
-    if (isPlaying) {
-      let tickTimeout: NodeJS.Timeout;
-      const tick = () => {
-        tickTimeout = setTimeout(() => {
-          setGrid((prevGrid) => {
-            if (canMakeMove(prevGrid, 'down')) {
-              return moveActiveTetromino(prevGrid, 'down');
-            } else {
-              const frozenGrid = freezeGrid(prevGrid);
-              if (gameIsOver(frozenGrid)) {
-                setGameState('over');
-                return frozenGrid;
-              }
-              const linesToClear = checkForLineClear(frozenGrid);
-              const clearedGrid = clearLines(frozenGrid, linesToClear);
-              score.current += linesToClear.length;
-              return addShapeToGrid(getRandomShape(Date.now()), clearedGrid);
+    let tickTimeout: NodeJS.Timeout;
+    const tick = () => {
+      tickTimeout = setTimeout(() => {
+        setGrid((prevGrid) => {
+          if (canMakeMove(prevGrid, 'down')) {
+            return moveActiveTetromino(prevGrid, 'down');
+          } else {
+            const frozenGrid = freezeGrid(prevGrid);
+            if (gameIsOver(frozenGrid)) {
+              setGameState('over');
+              return frozenGrid;
             }
-          });
-          tick();
-        }, TICK_TIME);
-      };
-      tick();
-      return () => {
-        clearTimeout(tickTimeout);
-      };
-    }
-  }, [gameState, isPlaying]);
+            const linesToClear = checkForLineClear(frozenGrid);
+            const clearedGrid = clearLines(frozenGrid, linesToClear);
+            score.current += linesToClear.length;
+            return addShapeToGrid(getRandomShape(Date.now()), clearedGrid);
+          }
+        });
+        tick();
+      }, TICK_TIME);
+    };
+    if (isPlaying) tick();
+    return () => {
+      clearTimeout(tickTimeout);
+    };
+  }, [isPlaying]);
 
   const moveDownHandler = useCallback(() => {
     if (isPlaying)
