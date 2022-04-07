@@ -4,7 +4,7 @@ interface KeyFunctions {
   [keyName: string]: () => void;
 }
 
-const useSwipeEvents = (keyFunctions: KeyFunctions) => {
+const useKeyEvents = (keyFunctions: KeyFunctions) => {
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -20,7 +20,7 @@ const useSwipeEvents = (keyFunctions: KeyFunctions) => {
       document.removeEventListener('keydown', keyDownHandler);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...Object.values(keyFunctions)]);
+  }, [...Object.entries(keyFunctions).flat()]);
 };
 
-export default useSwipeEvents;
+export default useKeyEvents;
