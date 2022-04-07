@@ -7,6 +7,7 @@
   justify-content: center;
   color: white;
   padding: 10px;
+  min-height: 80vh;
 }
 
 .appLink {
