@@ -28,26 +28,22 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       const keyName = event.key.toLocaleUpperCase();
-      setCurrentGuess((prevGuess) => {
-        if (keyName === 'ENTER' && prevGuess.length === answer.length) {
-          checkGuess(prevGuess);
-          return prevGuess;
-        } else if (keyName === 'BACKSPACE') {
-          return prevGuess.slice(0, -1);
-        } else if (
-          keyName.length > 1 ||
-          !keyName.match(/[A-Z]/) ||
-          prevGuess.length === answer.length
-        ) {
-          return prevGuess;
-        } else return prevGuess + keyName;
-      });
+      if (keyName === 'ENTER' && currentGuess.length === answer.length) {
+        checkGuess(currentGuess);
+      } else if (keyName === 'BACKSPACE') {
+        setCurrentGuess((prevGuess) => prevGuess.slice(0, -1));
+      } else if (
+        keyName.length > 1 ||
+        !keyName.match(/[A-Z]/) ||
+        currentGuess.length === answer.length
+      ) {
+      } else return setCurrentGuess((prevGuess) => prevGuess + keyName);
     };
     document.addEventListener('keydown', keyDownHandler);
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  }, [checkGuess, answer]);
+  }, [checkGuess, answer, currentGuess]);
 
   const gameOver =
     pastGuesses.includes(answer) || pastGuesses.length === maxTurns;
