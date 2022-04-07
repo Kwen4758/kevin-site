@@ -28,9 +28,8 @@ const Tetris = () => {
 
   // handles tick
   useEffect(() => {
-    let tickTimeout: NodeJS.Timeout;
-    const tick = () => {
-      tickTimeout = setTimeout(() => {
+    if (isPlaying) {
+      const interval = setInterval(() => {
         setGrid((prevGrid) => {
           if (canMakeMove(prevGrid, 'down')) {
             return moveActiveTetromino(prevGrid, 'down');
@@ -46,13 +45,11 @@ const Tetris = () => {
             return addShapeToGrid(getRandomShape(Date.now()), clearedGrid);
           }
         });
-        tick();
       }, TICK_TIME);
-    };
-    if (isPlaying) tick();
-    return () => {
-      clearTimeout(tickTimeout);
-    };
+      return () => {
+        clearInterval(interval);
+      };
+    }
   }, [isPlaying]);
 
   const moveDownHandler = useCallback(() => {
