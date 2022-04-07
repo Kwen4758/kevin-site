@@ -51,7 +51,6 @@ const useSwipeEvents = ({
     document.addEventListener('touchend', handleTouchEnd);
 
     return () => {
-      console.log('swipe dismount');
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
     };

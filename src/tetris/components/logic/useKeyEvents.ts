@@ -17,7 +17,6 @@ const useSwipeEvents = (keyFunctions: KeyFunctions) => {
     };
     document.addEventListener('keydown', keyDownHandler);
     return () => {
-      console.log('dismounting')
       document.removeEventListener('keydown', keyDownHandler);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
