@@ -11,11 +11,11 @@ import {
   getRandomShape,
   moveActiveTetromino,
   smashDown,
-} from './logic/functions';
-import { GameState } from './logic/constants';
+} from '../logic/functions';
+import { GameState } from '../logic/constants';
 import Grid from './Grid';
-import useKeyEvents from './logic/useKeyEvents';
-import useSwipeEvents from './logic/useSwipeEvents';
+import useKeyEvents from '../logic/useKeyEvents';
+import useSwipeEvents from '../logic/useSwipeEvents';
 
 const TICK_TIME = 500;
 

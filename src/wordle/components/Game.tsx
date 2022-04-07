@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import GameBoard from './GameBoard';
-import { getRandomWord } from './logic/functions';
+import { getRandomWord } from '../logic/functions';
 
 const WordleGame = () => {
   const [answer, setAnswer] = useState(getRandomWord());

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import TileRenderer from './TileRenderer';
-import { checkWord_API } from './logic/functions';
+import { checkWord_API } from '../logic/functions';
 
 interface GameBoardProps {
   maxTurns: number;
