@@ -4,7 +4,7 @@ import TetrisGame from './components/Game';
 
 const Tetris = () => {
   return (
-    <div className={styles.app} style={{height:'100vh', width:'100vw'}}>
+    <div className={styles.app}>
       <Link to="/" className={styles.appLink}>
         HOME
       </Link>
