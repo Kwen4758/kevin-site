@@ -18,7 +18,7 @@ const getRandomWord = async (length: number): Promise<string> => {
   };
 
   const res: any = await axios.request(options).catch(function (error) {
-    console.warn(error);
+    console.error(error);
   });
 
   return ((res?.data?.word as string) ?? 'rando').toLocaleUpperCase();

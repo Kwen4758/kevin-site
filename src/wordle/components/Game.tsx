@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import GameBoard from './GameBoard';
 import { getRandomWord } from './logic/functions';
 
-const App = () => {
+const WordleGame = () => {
   const [answer, setAnswer] = useState('');
 
   const awaitNewWord = () => {
@@ -23,4 +23,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default WordleGame;

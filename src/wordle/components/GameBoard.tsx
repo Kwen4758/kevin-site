@@ -11,19 +11,13 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
   const [pastGuesses, setPastGuesses] = useState<string[]>([]);
   const [currentGuess, setCurrentGuess] = useState('');
 
-  //console.log(currentGuess, pastGuesses);
-
-  const whatever = useCallback((word: string) => {
-    console.log('whatever');
+  const checkGuess = useCallback((word: string) => {
     checkWord(word).then((isWord) => {
-      console.log('checking word');
       if (isWord) {
-        console.log('isword');
         setPastGuesses((prev) => [...prev, word]);
         setCurrentGuess('');
-      } else console.log('not word')
+      }
     });
-    console.log('end whatever')
   }, []);
 
   useEffect(() => {
@@ -35,10 +29,8 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
     const keyDownHandler = (event: KeyboardEvent) => {
       const keyName = event.key.toLocaleUpperCase();
       setCurrentGuess((prevGuess) => {
-        console.log({ prevGuess, answer, keyName });
         if (keyName === 'ENTER' && prevGuess.length === answer.length) {
-          console.log('ender');
-          whatever(prevGuess);
+          checkGuess(prevGuess);
           return prevGuess;
         } else if (keyName === 'BACKSPACE') {
           return prevGuess.slice(0, -1);
@@ -55,7 +47,7 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  }, [whatever, answer]);
+  }, [checkGuess, answer]);
 
   const gameOver =
     pastGuesses.includes(answer) || pastGuesses.length === maxTurns;
