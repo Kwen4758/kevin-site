@@ -7,12 +7,10 @@ interface SwipeFunctions {
   onSwipeRight?: () => void;
 }
 
-const useSwipeEvents = ({
-  onSwipeUp,
-  onSwipeDown,
-  onSwipeLeft,
-  onSwipeRight,
-}: SwipeFunctions) => {
+const useSwipeEvents = (
+  { onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight }: SwipeFunctions,
+  minDistance = 0
+) => {
   useEffect(() => {
     let startX: number | null = null;
     let startY: number | null = null;
@@ -28,6 +26,10 @@ const useSwipeEvents = ({
 
       const xDiff = startX - touchEnd.clientX;
       const yDiff = startY - touchEnd.clientY;
+
+      const distanceMoved = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+
+      if (distanceMoved < minDistance) return;
 
       if (Math.abs(xDiff) > Math.abs(yDiff)) {
         if (xDiff > 0) {
@@ -54,7 +56,7 @@ const useSwipeEvents = ({
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight]);
+  }, [onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight, minDistance]);
 };
 
 export default useSwipeEvents;
