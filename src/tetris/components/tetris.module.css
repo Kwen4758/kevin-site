@@ -1,7 +1,8 @@
 .tile {
   width: 3.5vh;
   height: 3.5vh;
-  border: solid
+  border: solid;
+  color: black;
 }
 
 .flexRow, .flexColumn {

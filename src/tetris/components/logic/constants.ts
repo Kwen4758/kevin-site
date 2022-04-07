@@ -48,7 +48,7 @@ export const TetrominoColorMap = {
   Hero: 'lightblue',
   Teewee: 'purple',
   Smashboy: 'yellow',
-  None: 'white',
+  None: 'black',
 };
 
 export interface TileIdentity {
