@@ -1,0 +1,42 @@
+.flexRow, .flexColumn {
+  display: flex;
+}
+
+.flexRow {
+  flex-direction: row;
+}
+
+.flexColumn {
+  flex-direction: column;
+}
+
+.searchBar {
+  width: 40vw;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.searchButton {
+  background-color: blue;
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.resultContainer {
+  border-radius: 10px;
+  text-align: left;
+}
+
+.resultTitle {
+  font-size: 20px;
+  color: lightblue
+}
+
+.resultSnippet {
+  width: 60vw;
+}
+
+.resultThumbnail {
+  height: 10vh;
+}

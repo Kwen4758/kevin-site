@@ -1,11 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./app/App";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Tetris from "./tetris/Tetris";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './app/App';
+import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Tetris from './tetris/Tetris';
 import Wordle from './wordle/Wordle';
+import SearchEngine from './google-search/SearchEngine';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -14,11 +15,12 @@ ReactDOM.render(
         <Route path="/" element={<App />} />
         <Route path="tetris" element={<Tetris />} />
         <Route path="wordle" element={<Wordle />} />
+        <Route path="search-engine" element={<SearchEngine />} />
         <Route path="*" element={<App />} />
       </Routes>
     </React.StrictMode>
   </BrowserRouter>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

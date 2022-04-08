@@ -10,6 +10,9 @@ function App() {
       <Link to="/wordle" className={styles.appLink}>
         Wordle
       </Link>
+      <Link to="/search-engine" className={styles.appLink}>
+        Search Engine
+      </Link>
     </div>
   );
 }
