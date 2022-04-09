@@ -4,7 +4,8 @@ interface KeyFunctions {
   [keyName: string]: () => void;
 }
 
-const useKeyEvents = (keyFunctions: KeyFunctions) => {
+const useKeyEvents = (keyFunctions: KeyFunctions, dependencies?: any[]) => {
+  const myDependencies = dependencies ?? Object.entries(keyFunctions).flat();
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -20,7 +21,7 @@ const useKeyEvents = (keyFunctions: KeyFunctions) => {
       document.removeEventListener('keydown', keyDownHandler);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...Object.entries(keyFunctions).flat()]);
+  }, [...myDependencies]);
 };
 
 export default useKeyEvents;

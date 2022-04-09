@@ -65,6 +65,6 @@ export const emptyTile: TileIdentity = {
 
 export type ValidMove = 'left' | 'right' | 'down';
 
-export type ValidRotation = 'clockwise' | 'counter clockwise';
+export type ValidRotation = 'clockwise' | 'counter';
 
-export type GameState = 'fresh' | 'playing' | 'paused' | 'over';
+export type PlayState = 'fresh' | 'playing' | 'paused' | 'over';

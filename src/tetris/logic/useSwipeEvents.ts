@@ -7,10 +7,28 @@ interface SwipeFunctions {
   onSwipeRight?: () => void;
 }
 
+interface SwipeOptions {
+  minDistance?: number;
+}
+
 const useSwipeEvents = (
-  { onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight }: SwipeFunctions,
-  minDistance = 0
+  {
+    onSwipeUp,
+    onSwipeDown,
+    onSwipeLeft,
+    onSwipeRight,
+    minDistance = 0,
+  }: SwipeFunctions & SwipeOptions,
+  dependencies?: any[]
 ) => {
+  const myDependencies = dependencies ?? [
+    onSwipeUp,
+    onSwipeDown,
+    onSwipeLeft,
+    onSwipeRight,
+    minDistance,
+  ];
+
   useEffect(() => {
     let startX: number | null = null;
     let startY: number | null = null;
@@ -56,7 +74,8 @@ const useSwipeEvents = (
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight, minDistance]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [...myDependencies]);
 };
 
 export default useSwipeEvents;

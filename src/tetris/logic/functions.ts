@@ -160,7 +160,7 @@ export const attemptRotation = (
             justSet.push(`${destinationY}-${destinationX}`);
             break;
           }
-          case 'counter clockwise': {
+          case 'counter': {
             const destinationY = center.y + center.x - columnIndex;
             const destinationX = center.x - center.y + rowIndex;
             if (
