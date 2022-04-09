@@ -5,6 +5,8 @@
   margin: 2px;
   color: black;
   line-height: 10vh;
+  font-size: 2rem;
+  font-weight: 900;
 }
 
 .tileRow {
