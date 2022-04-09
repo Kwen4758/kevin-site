@@ -14,9 +14,11 @@ const Tetris = () => {
     playState: 'fresh',
   });
 
+  const isPlaying = state.playState === 'playing'
+
   // handles tick
   useEffect(() => {
-    if (state.playState === 'playing') {
+    if (isPlaying) {
       const interval = setInterval(() => {
         dispatch('TICK');
       }, TICK_TIME);
@@ -24,7 +26,7 @@ const Tetris = () => {
         clearInterval(interval);
       };
     }
-  }, [state.playState === 'playing']);
+  }, [isPlaying]);
 
   useKeyEvents(
     {
