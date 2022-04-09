@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import { getEmptyGrid } from '../logic/functions';
 import Grid from './Grid';
 import useKeyEvents from '../logic/useKeyEvents';
@@ -14,7 +14,7 @@ const Tetris = () => {
     playState: 'fresh',
   });
 
-  const isPlaying = state.playState === 'playing'
+  const isPlaying = state.playState === 'playing';
 
   // handles tick
   useEffect(() => {
@@ -28,27 +28,24 @@ const Tetris = () => {
     }
   }, [isPlaying]);
 
-  useKeyEvents(
-    {
-      arrowDown: () => dispatch('MOVE_DOWN'),
-      arrowRight: () => dispatch('MOVE_RIGHT'),
-      arrowLeft: () => dispatch('MOVE_LEFT'),
-      arrowUp: () => dispatch('ROTATE_CLOCKWISE'),
-      shift: () => dispatch('ROTATE_COUNTER'),
-      space: () => dispatch('SMASH'),
-    },
-    []
-  );
+  const keyFunctions = useRef({
+    arrowDown: () => dispatch('MOVE_DOWN'),
+    arrowRight: () => dispatch('MOVE_RIGHT'),
+    arrowLeft: () => dispatch('MOVE_LEFT'),
+    arrowUp: () => dispatch('ROTATE_CLOCKWISE'),
+    shift: () => dispatch('ROTATE_COUNTER'),
+    space: () => dispatch('SMASH'),
+  });
 
-  useSwipeEvents(
-    {
-      onSwipeUp: () => dispatch('ROTATE_CLOCKWISE'),
-      onSwipeDown: () => dispatch('SMASH'),
-      onSwipeLeft: () => dispatch('MOVE_LEFT'),
-      onSwipeRight: () => dispatch('MOVE_RIGHT'),
-    },
-    []
-  );
+  const swipeFunctions = useRef({
+    onSwipeUp: () => dispatch('ROTATE_CLOCKWISE'),
+    onSwipeDown: () => dispatch('SMASH'),
+    onSwipeLeft: () => dispatch('MOVE_LEFT'),
+    onSwipeRight: () => dispatch('MOVE_RIGHT'),
+  });
+
+  useKeyEvents(keyFunctions.current);
+  useSwipeEvents(swipeFunctions.current);
 
   return (
     <>

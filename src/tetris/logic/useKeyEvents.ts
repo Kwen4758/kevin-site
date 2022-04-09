@@ -4,9 +4,7 @@ interface KeyFunctions {
   [keyName: string]: () => void;
 }
 
-const useKeyEvents = (keyFunctions: KeyFunctions, dependencies?: any[]) => {
-  const myDependencies = dependencies ?? Object.entries(keyFunctions).flat();
-
+const useKeyEvents = (keyFunctions: KeyFunctions) => {
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
       const keyPressed = event.key.toLocaleUpperCase();
@@ -20,8 +18,7 @@ const useKeyEvents = (keyFunctions: KeyFunctions, dependencies?: any[]) => {
     return () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...myDependencies]);
+  }, [keyFunctions]);
 };
 
 export default useKeyEvents;
