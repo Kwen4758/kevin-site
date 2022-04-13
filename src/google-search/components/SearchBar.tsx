@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import { useRef } from 'react';
 import styles from './search.module.css';
 
@@ -27,9 +28,9 @@ const SearchBar = (props: SearchBarProps) => {
         ref={inputRef}
         onKeyDown={handleKeyDown}
       />
-      <button className={styles.searchButton} onClick={mySubmit}>
+      <Button onClick={mySubmit}>
         Submit
-      </button>
+      </Button>
     </div>
   );
 };

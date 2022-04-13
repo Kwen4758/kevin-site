@@ -1,13 +1,13 @@
 .tile, .keyboardKey {
-  width: 5vh;
-  height: 5vh;
-  padding: 10px;
+  width: 6vh;
+  height: 6vh;
   border-radius: 3px;
   margin: 2px;
   color: black;
-  line-height: 5vh;
+  line-height: 6vh;
   font-size: 4vh;
   font-weight: 900;
+  text-align: center;
 }
 
 .tileRow {
@@ -19,7 +19,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .keyboardKey {
@@ -27,4 +26,6 @@
   min-width: fit-content;
   max-width: 1vw;
   font-size: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
 }

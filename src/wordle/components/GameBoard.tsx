@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import TileRenderer from './TileRenderer';
 import { checkWord_API } from '../logic/functions';
 import styles from './wordle.module.css';
+import { Alert } from 'antd';
 
 interface GameBoardProps {
   maxTurns: number;
@@ -11,12 +12,25 @@ interface GameBoardProps {
 const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
   const [pastGuesses, setPastGuesses] = useState<string[]>([]);
   const [currentGuess, setCurrentGuess] = useState('');
+  const [alert, setAlert] = useState<JSX.Element | null>(null);
 
   const checkGuess = useCallback((word: string) => {
     checkWord_API(word).then((isWord) => {
       if (isWord) {
         setPastGuesses((prev) => [...prev, word]);
         setCurrentGuess('');
+        setAlert(null);
+      } else {
+        setAlert(
+          <Alert
+            key={Math.random()}
+            message="Not a valid word."
+            type="error"
+            style={{ position: 'absolute', top: '3px' }}
+            closable={true}
+            showIcon={true}
+          />
+        );
       }
     });
   }, []);
@@ -62,6 +76,7 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
   return (
     <div className={styles.flexColumn}>
       {gameOver && gameOverText}
+      {alert}
       <TileRenderer
         maxTurns={maxTurns}
         correctAnswer={answer}

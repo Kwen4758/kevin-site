@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -9,6 +8,8 @@ import Wordle from './wordle/Wordle';
 import SearchEngine from './google-search/SearchEngine';
 import { Provider } from 'react-redux';
 import store from './store';
+import 'antd/dist/antd.css';
+import './index.css';
 
 ReactDOM.render(
   <BrowserRouter>

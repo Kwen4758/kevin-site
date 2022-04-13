@@ -4,6 +4,7 @@ import Grid from './Grid';
 import useKeyEvents from '../logic/useKeyEvents';
 import useSwipeEvents from '../logic/useSwipeEvents';
 import gameStateReducer from '../logic/gameStateReducer';
+import { Button } from 'antd';
 
 const TICK_TIME = 500;
 
@@ -55,22 +56,22 @@ const Tetris = () => {
         'Game Over'
       ) : (
         <>
-          <button
+          <Button
             onClick={() => dispatch('START')}
             disabled={state.playState !== 'fresh'}
           >
             START GAME
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => dispatch('PAUSE/RESUME')}
             disabled={state.playState === 'fresh'}
           >
             PAUSE/RESUME GAME
-          </button>
+          </Button>
         </>
       )}
       {state.playState !== 'fresh' && (
-        <button onClick={() => dispatch('RESET')}>RESET GAME</button>
+        <Button onClick={() => dispatch('RESET')}>RESET GAME</Button>
       )}
     </>
   );

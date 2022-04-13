@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import GameBoard from './GameBoard';
 import { getRandomWord } from '../logic/functions';
+import { Button } from 'antd';
 
 const WordleGame = () => {
   const [answer, setAnswer] = useState(getRandomWord());
@@ -16,9 +17,9 @@ const WordleGame = () => {
   return (
     <>
       <GameBoard answer={answer} maxTurns={6} />
-      <button title={'Try Again'} onClick={() => setAnswer(getRandomWord())}>
+      <Button title={'Try Again'} onClick={() => setAnswer(getRandomWord())}>
         Try Again
-      </button>
+      </Button>
     </>
   );
 };
