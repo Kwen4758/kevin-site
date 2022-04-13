@@ -20,7 +20,7 @@ const getRandomWord_API = async (length: number): Promise<string> => {
     },
   };
 
-  const res: any = await axios.request(options).catch(function (error) {
+  const res = await axios.request(options).catch(function (error) {
     console.error(error);
   });
 
@@ -37,11 +37,11 @@ const checkWord_API = async (word: string): Promise<boolean> => {
     },
   };
 
-  const res: any = await axios.request(options).catch(function (error) {
-    console.warn('Not a word');
-  });
+  const res = await axios.request(options);
+  const foundInApi = res?.status === 200;
+  const isWord = foundInApi || words.includes(word.toLocaleLowerCase());
 
-  return res?.status === 200;
+  return isWord;
 };
 
 const getRandomWord = () => {

@@ -1,15 +1,30 @@
-.tile {
-  width: 10vh;
-  height: 10vh;
+.tile, .keyboardKey {
+  width: 5vh;
+  height: 5vh;
+  padding: 10px;
   border-radius: 3px;
   margin: 2px;
   color: black;
-  line-height: 10vh;
-  font-size: 2rem;
+  line-height: 5vh;
+  font-size: 4vh;
   font-weight: 900;
 }
 
 .tileRow {
   display: flex;
   flex-direction: 'row';
+}
+
+.keyboard, .flexColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.keyboardKey {
+  cursor: pointer;
+  min-width: fit-content;
+  max-width: 1vw;
+  font-size: 100%;
 }

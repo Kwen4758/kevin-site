@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import TileRenderer from './TileRenderer';
 import { checkWord_API } from '../logic/functions';
+import styles from './wordle.module.css';
 
 interface GameBoardProps {
   maxTurns: number;
@@ -25,9 +26,8 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
     setCurrentGuess('');
   }, [answer]);
 
-  useEffect(() => {
-    const keyDownHandler = (event: KeyboardEvent) => {
-      const keyName = event.key.toLocaleUpperCase();
+  const letterInputHandler = useCallback(
+    (keyName: string) => {
       if (keyName === 'ENTER' && currentGuess.length === answer.length) {
         checkGuess(currentGuess);
       } else if (keyName === 'BACKSPACE') {
@@ -38,12 +38,20 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
         currentGuess.length === answer.length
       ) {
       } else return setCurrentGuess((prevGuess) => prevGuess + keyName);
+    },
+    [checkGuess, answer, currentGuess]
+  );
+
+  useEffect(() => {
+    const keydownHandler = (event: KeyboardEvent) => {
+      const keyName = event.key.toLocaleUpperCase();
+      letterInputHandler(keyName);
     };
-    document.addEventListener('keydown', keyDownHandler);
+    document.addEventListener('keydown', keydownHandler);
     return () => {
-      document.removeEventListener('keydown', keyDownHandler);
+      document.removeEventListener('keydown', keydownHandler);
     };
-  }, [checkGuess, answer, currentGuess]);
+  }, [letterInputHandler]);
 
   const gameOver =
     pastGuesses.includes(answer) || pastGuesses.length === maxTurns;
@@ -52,12 +60,13 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
     : `You Lost!! The word was ${answer}.`;
 
   return (
-    <div>
+    <div className={styles.flexColumn}>
       {gameOver && gameOverText}
       <TileRenderer
         maxTurns={maxTurns}
         correctAnswer={answer}
         guesses={[...pastGuesses, currentGuess]}
+        onKeyPress={letterInputHandler}
       />
     </div>
   );

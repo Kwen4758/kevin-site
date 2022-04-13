@@ -3,12 +3,18 @@ import styles from './wordle.module.css';
 interface TileProps {
   text: string;
   color: string;
-  textColor: string,
+  textColor: string;
+  onClick?: (letter: string) => void;
+  className?: string;
 }
 
-const Tile = ({ text, color, textColor }: TileProps) => {
+const Tile = ({ text, color, textColor, onClick, className }: TileProps) => {
   return (
-    <div className={styles.tile} style={{ backgroundColor: color, color: textColor }}>
+    <div
+      className={className ?? styles.tile}
+      style={{ backgroundColor: color, color: textColor }}
+      onClick={onClick && (() => onClick(text))}
+    >
       {text}
     </div>
   );
