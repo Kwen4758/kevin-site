@@ -32,7 +32,7 @@ const useSwipeEvents = (
       if (distanceMoved < minDistance) return;
 
       if (Math.abs(xDiff) > Math.abs(yDiff)) {
-        if (xDiff > 0) {
+        if (xDiff < 0) {
           onSwipeRight && onSwipeRight();
         } else {
           onSwipeLeft && onSwipeLeft();
