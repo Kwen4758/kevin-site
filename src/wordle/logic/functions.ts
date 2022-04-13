@@ -37,7 +37,7 @@ const checkWord_API = async (word: string): Promise<boolean> => {
     },
   };
 
-  const res = await axios.request(options);
+  const res = await axios.request(options).catch((err) => null);
   const foundInApi = res?.status === 200;
   const isWord = foundInApi || words.includes(word.toLocaleLowerCase());
 
