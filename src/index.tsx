@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Tetris from './tetris/Tetris';
 import Wordle from './wordle/Wordle';
 import SearchEngine from './google-search/SearchEngine';
+import LyricSearch from './lyric-search/LyricSearch';
 import { Provider } from 'react-redux';
 import store from './store';
 import './index.css';
@@ -21,6 +22,8 @@ root.render(
           <Route path="tetris" element={<Tetris />} />
           <Route path="wordle" element={<Wordle />} />
           <Route path="search-engine" element={<SearchEngine />} />
+          <Route path="lyric-search" element={<LyricSearch />} />
+          <Route path="csv-search" element={<LyricSearch />} />
           <Route path="*" element={<App />} />
         </Routes>
       </Provider>

@@ -13,6 +13,9 @@ function App() {
       <Link to="/search-engine" className={styles.appLink}>
         Search Engine
       </Link>
+      <Link to="/lyric-search" className={styles.appLink}>
+        Lyric Search
+      </Link>
     </div>
   );
 }
