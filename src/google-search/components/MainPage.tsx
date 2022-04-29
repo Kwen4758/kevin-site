@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Item } from '../logic/constants';
 import { performSearch } from '../logic/functions';
 import Result from './Result';
 import SearchBar from './SearchBar';
 import styles from './search.module.css';
-import { Pagination } from '@mui/material';
+import { Divider, List, Pagination } from '@mui/material';
 
 const MainPage = () => {
   const [currentResults, setCurrentResults] = useState<Item[] | null>(null);
@@ -27,14 +27,20 @@ const MainPage = () => {
         <SearchBar onSubmit={(query) => setQuery(query)} />
         {currentResults && (
           <>
-            {currentResults.map((result, index) => (
-              <Result key={index} item={result} />
-            ))}
+            <List sx={{ width: '100%', maxWidth: '50vw' }}>
+              {currentResults.map((result, index) => (
+                <React.Fragment key={result.title}>
+                  {index !== 0 && <Divider variant="inset" component="li" />}
+                  <Result item={result} />
+                </React.Fragment>
+              ))}
+            </List>
             <Pagination
               count={10}
               variant="outlined"
               page={pageNumber}
               onChange={(event, newPage) => setPageNumber(newPage)}
+              size={'large'}
             />
           </>
         )}
