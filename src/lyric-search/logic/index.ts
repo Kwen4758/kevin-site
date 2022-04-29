@@ -17,7 +17,7 @@ export const performSearch = (query: string) => {
       song.title.toLocaleString().includes(query) ||
       song.artist.toLocaleString().includes(query) ||
       song.lyrics.toLocaleString().includes(query) ||
-      song.year.toLocaleString().includes(query)
+      song.year === +query
     )
       result.push(song);
   });
