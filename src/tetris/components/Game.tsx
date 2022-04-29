@@ -4,7 +4,7 @@ import Grid from './Grid';
 import useKeyEvents from '../logic/useKeyEvents';
 import useSwipeEvents from '../logic/useSwipeEvents';
 import gameStateReducer from '../logic/gameStateReducer';
-import { Button } from 'antd';
+import { Button } from '@mui/material';
 
 const TICK_TIME = 500;
 
@@ -57,12 +57,14 @@ const Tetris = () => {
       ) : (
         <>
           <Button
+            variant="contained"
             onClick={() => dispatch('START')}
             disabled={state.playState !== 'fresh'}
           >
             START GAME
           </Button>
           <Button
+            variant="contained"
             onClick={() => dispatch('PAUSE/RESUME')}
             disabled={state.playState === 'fresh'}
           >
@@ -71,7 +73,9 @@ const Tetris = () => {
         </>
       )}
       {state.playState !== 'fresh' && (
-        <Button onClick={() => dispatch('RESET')}>RESET GAME</Button>
+        <Button variant="contained" onClick={() => dispatch('RESET')}>
+          RESET GAME
+        </Button>
       )}
     </>
   );

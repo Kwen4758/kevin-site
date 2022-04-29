@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button } from '@mui/material';
 import { useRef } from 'react';
 import styles from './search.module.css';
 
@@ -28,7 +28,7 @@ const SearchBar = (props: SearchBarProps) => {
         ref={inputRef}
         onKeyDown={handleKeyDown}
       />
-      <Button onClick={mySubmit}>
+      <Button variant="contained" onClick={mySubmit}>
         Submit
       </Button>
     </div>

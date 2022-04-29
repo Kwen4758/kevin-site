@@ -8,7 +8,6 @@ import Wordle from './wordle/Wordle';
 import SearchEngine from './google-search/SearchEngine';
 import { Provider } from 'react-redux';
 import store from './store';
-import 'antd/dist/antd.css';
 import './index.css';
 
 ReactDOM.render(

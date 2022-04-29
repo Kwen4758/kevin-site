@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import GameBoard from './GameBoard';
 import { getRandomWord } from '../logic/functions';
-import { Button } from 'antd';
+import { Button } from '@mui/material';
 
 const WordleGame = () => {
   const [answer, setAnswer] = useState(getRandomWord());
@@ -17,7 +17,11 @@ const WordleGame = () => {
   return (
     <>
       <GameBoard answer={answer} maxTurns={6} />
-      <Button title={'Try Again'} onClick={() => setAnswer(getRandomWord())}>
+      <Button
+        variant="contained"
+        title={'Try Again'}
+        onClick={() => setAnswer(getRandomWord())}
+      >
         Try Again
       </Button>
     </>

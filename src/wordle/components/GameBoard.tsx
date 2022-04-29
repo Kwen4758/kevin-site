@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import TileRenderer from './TileRenderer';
 import { checkWord_API } from '../logic/functions';
 import styles from './wordle.module.css';
-import { Alert } from 'antd';
+import { Alert } from '@mui/material';
 
 interface GameBoardProps {
   maxTurns: number;
@@ -24,12 +24,12 @@ const GameBoard = ({ answer, maxTurns }: GameBoardProps) => {
         setAlert(
           <Alert
             key={Math.random()}
-            message="Not a valid word."
-            type="error"
+            severity="warning"
             style={{ position: 'absolute', top: '3px' }}
-            closable={true}
-            showIcon={true}
-          />
+            onClose={() => setAlert(null)}
+          >
+            Not a valid word.
+          </Alert>
         );
       }
     });
